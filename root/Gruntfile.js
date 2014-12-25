@@ -1,48 +1,49 @@
-'use strict';
-
-/*global module:false*/
 module.exports = function(grunt) {
+  'use strict';
+  
   var timestamp = grunt.template.today('yymmddHHMMss');
   
-  // Project configuration.
   grunt.initConfig({
-    // Metadata.
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*! <%= pkg.title || pkg.name %> v<%= pkg.version %> \n'+
-     ' * Copyright <%= pkg.author %> Build: <%= grunt.template.today("yyyy-mm-dd") %>\n'+
+     ' * Copyright <%= pkg.author.name %> Build: <%= grunt.template.today("yyyy-mm-dd") %>\n'+
      ' */\n',
     timestamp : timestamp,
     cdn : '',
+    dist : 'dist',
     
-    // Task configuration.
-    clean: ['tmp/', 'dist/'],
+    clean: ['tmp/', '<%= dist%>/'],
+    
     copy: {
       images : {
         files : [
-          {expand: true, cwd : 'src/', src: ['images/**'], dest: 'dist/'},
+          {expand: true, cwd : 'src/', src: ['images/**'], dest: '<%= dist%>/'},
         ]
       }
     },
+
     concat: {
       styles: {
-        src: ['src/styles/reset.css', 'src/styles/style.css'],
+        src: ['src/styles/normalize.css', 'src/styles/style.css'],
         dest: 'tmp/<%= pkg.name %>.css'
       },
       scripts: {
-        src: ['src/scripts/share-wx.js', 'src/scripts/ajax.js', 'src/scripts/app.js'],
+        src: ['src/scripts/app.js'],
         dest: 'tmp/<%= pkg.name %>.js'
       }
     },
+
     uglify: {
       options: {
         banner : '<%= banner %>'
       },
       scripts: {
         files:{
-          'dist/scripts/<%= pkg.name %>-<%= timestamp %>.min.js' : 'tmp/<%= pkg.name %>.js'
+          '<%= dist%>/scripts/<%= pkg.name %>-<%= timestamp %>.min.js' : 'tmp/<%= pkg.name %>.js'
         }
       }
     },
+
     cssmin: {
       options: {
         banner : '<%= banner %>',
@@ -50,10 +51,11 @@ module.exports = function(grunt) {
       },
       styles: {
         files: {
-          'dist/styles/<%= pkg.name %>-<%= timestamp %>.min.css' : 'tmp/<%= pkg.name %>.css'
+          '<%= dist%>/styles/<%= pkg.name %>-<%= timestamp %>.min.css' : 'tmp/<%= pkg.name %>.css'
         }
       }
     },
+
     jshint: {
       options: {
         jshintrc: '.jshintrc'
@@ -62,9 +64,10 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       src: {
-        src : ['src/**/*.js']
+        src : ['src/scripts/*.js']
       }
     },
+
     processhtml: {
       production: {
         options: {
@@ -75,7 +78,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          'dist/index.html' : 'src/index.html'
+          '<%= dist%>/index.html' : 'src/index.html'
         }
       },
       development: {
@@ -87,10 +90,11 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          'dist/index.html' : 'src/index.html'
+          '<%= dist%>/index.html' : 'src/index.html'
         }
       }
     },
+
     watch: {
       livereload: {
         options: {livereload: true},
@@ -98,6 +102,7 @@ module.exports = function(grunt) {
         tasks: ['less:development', 'jshint']
       }
     },
+
     connect: {
       server:{
         options : {
@@ -109,6 +114,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     less: {
       development: {
         path : 'src/styles/',
@@ -118,6 +124,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     imagemin: {
       images : {
         files : [
@@ -125,9 +132,20 @@ module.exports = function(grunt) {
             expand : true,
             cwd : 'src/',
             src: ['images/**/*.{png,jpg,gif}'],
-            dest: 'dist/'
+            dest: '<%= dist%>/'
           }
         ]
+      }
+    },
+
+    includes: {
+      options: {
+        includeRegexp: /^(\s*)<!--\sinclude\s+(\S+)\s-->\s*$/
+      },
+      files: {
+        src: ['index.html'],
+        dest: 'src',
+        cwd: 'src/html'
       }
     }
   });
@@ -144,6 +162,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-includes');
 
   // Default task.
   grunt.registerTask('default', ['jshint']);

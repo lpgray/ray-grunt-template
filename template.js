@@ -36,10 +36,8 @@ exports.template = function(grunt, init, done) {
     init.prompt('version'),
     init.prompt('licenses'),
     init.prompt('author_name'),
-    init.prompt('author_email'),
-    init.prompt('author_url'),
+    init.prompt('author_email')
   ], function(err, props) {
-    props.keywords = [];
     props.devDependencies = {
       "grunt": "~0.4.2",
       "grunt-contrib-watch": "~0.5.3",
@@ -53,7 +51,8 @@ exports.template = function(grunt, init, done) {
       "grunt-processhtml": "~0.3.3",
       "grunt-contrib-less": "~0.11.4",
       "grunt-contrib-clean": "~0.6.0",
-      "grunt-contrib-imagemin" : "~0.9.2"
+      "grunt-contrib-imagemin" : "~0.9.2",
+      "grunt-includes": "~0.4.5"
     };
 
     // Files to copy (and process).
