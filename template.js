@@ -1,7 +1,6 @@
 /*
  * ray-grunt-template copied from grunt-init-commonjs
- * https://gruntjs.com/
- * https://www.h5shop.org/
+ * http://www.h5shop.org/
  * 
  * Copyright (c) 2013 "Cowboy" Ben Alman, contributors and Ray
  * Licensed under the MIT license.
