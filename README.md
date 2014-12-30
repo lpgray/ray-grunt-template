@@ -15,5 +15,6 @@
 - 每次build代码都会生成全新的css与js文件，以构建时间做为文件名称的一部分
 - 使用process-html来处理引用部分
 
-## 开发时的Web Server
-使用connect-livereload与grunt-contrib-watch配合实现监控修改浏览器自动刷新
+## Web Server
+- 使用connect-livereload与grunt-contrib-watch配合，实现监控文件修改后浏览器的自动刷新。
+- 采用更强大的 [browser-sync](https://github.com/shakyShane/browser-sync) 工具，来实现同步多屏开发，css自动注入无需刷新就可以看到浏览器效果，运行 `grunt dev2` 即使用 browser-sync 工具。

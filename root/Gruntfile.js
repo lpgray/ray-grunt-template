@@ -5,14 +5,14 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    banner: '/*! <%= pkg.title || pkg.name %> v<%= pkg.version %> \n' +
-      ' * Copyright <%= pkg.author.name %> Build: <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      ' */\n',
+    banner: '// <%= pkg.title || pkg.name %> v<%= pkg.version %> \n' +
+      '// Copyright <%= pkg.author.name %> Build: <%= grunt.template.today("yyyy-mm-dd") %>\n',
     timestamp: timestamp,
     cdn: '',
     dist: 'dist',
 
-    clean: ['tmp/', '<%= dist%>/'],
+    // Task configuration.
+    clean: ['tmp/', '<%= dist %>'],
 
     copy: {
       images: {
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/',
           src: ['images/**'],
-          dest: '<%= dist%>/'
+          dest: '<%= dist %>'
         }, ]
       }
     },
@@ -31,7 +31,8 @@ module.exports = function(grunt) {
         dest: 'tmp/<%= pkg.name %>.css'
       },
       scripts: {
-        src: ['src/scripts/core.js'],
+        src: ['src/scripts/core.js'
+        ],
         dest: 'tmp/<%= pkg.name %>.js'
       }
     },
@@ -42,7 +43,7 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: {
-          '<%= dist%>/scripts/<%= pkg.name %>-<%= timestamp %>.min.js': 'tmp/<%= pkg.name %>.js'
+          '<%= dist %>/scripts/<%= pkg.name %>-<%= timestamp %>.min.js': 'tmp/<%= pkg.name %>.js'
         }
       }
     },
@@ -54,7 +55,7 @@ module.exports = function(grunt) {
       },
       styles: {
         files: {
-          '<%= dist%>/styles/<%= pkg.name %>-<%= timestamp %>.min.css': 'tmp/<%= pkg.name %>.css'
+          '<%= dist %>/styles/<%= pkg.name %>-<%= timestamp %>.min.css': 'tmp/<%= pkg.name %>.css'
         }
       }
     },
@@ -66,13 +67,13 @@ module.exports = function(grunt) {
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      main: {
-        src: ['src/scripts/*.js']
+      src: {
+        src: ['src/scripts/**/*.js']
       }
     },
 
     processhtml: {
-      production: { // 会自动加上cdn变量
+      production: {
         options: {
           process: true,
           data: {
@@ -81,10 +82,10 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          '<%= dist%>/html/index.html': 'src/html/index.html'
+          '<%= dist %>/index.html': 'src/index.html'
         }
       },
-      development: { // 会自动加上cdn变量
+      development: {
         options: {
           process: true,
           data: {
@@ -93,7 +94,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          '<%= dist%>/html/index.html': 'src/html/index.html'
+          '<%= dist %>/index.html': 'src/index.html'
         }
       }
     },
@@ -103,7 +104,11 @@ module.exports = function(grunt) {
         options: {
           livereload: true
         },
-        files: ['src/**/*.js', 'src/**/*.html', 'src/**/*.less'],
+        files: ['src/**/*.js', 'src/html/**/*.html', 'src/**/*.less'],
+        tasks: ['less:development', 'includes', 'jshint']
+      },
+      browserSync: {
+        files: ['src/**/*.js', 'src/html/**/*.html', 'src/**/*.less'],
         tasks: ['less:development', 'includes', 'jshint']
       }
     },
@@ -136,7 +141,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/',
           src: ['images/**/*.{png,jpg,gif}'],
-          dest: '<%= dist%>/'
+          dest: '<%= dist %>'
         }]
       }
     },
@@ -147,8 +152,22 @@ module.exports = function(grunt) {
       },
       files: {
         src: ['*.html'],
-        dest: 'src/html',
-        cwd: 'src'
+        dest: 'src',
+        cwd: 'src/html'
+      }
+    },
+
+    browserSync: {
+      dev: {
+        bsFiles: {
+          src: 'src/styles/*.css'
+        },
+        options: {
+          server: {
+            baseDir: 'src'
+          },
+          watchTask: true
+        }
       }
     }
   });
@@ -166,12 +185,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-includes');
+  grunt.loadNpmTasks('grunt-browser-sync');
 
   // Default task.
   grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('dev', ['connect', 'watch']);
+  grunt.registerTask('dev', ['connect', 'watch:livereload']);
+  grunt.registerTask('dev2', ['browserSync', 'watch:browserSync']);
 
-  grunt.registerTask('build', ['clean', 'less', 'concat', 'uglify', 'cssmin', 'imagemin', 'includes', 'processhtml:development']);
-  grunt.registerTask('build-pro', ['clean', 'less', 'concat', 'uglify', 'cssmin', 'imagemin', 'includes', 'processhtml:production']);
-
+  grunt.registerTask('build', ['clean', 'less', 'concat', 'uglify', 'cssmin', 'imagemin', 'processhtml']);
 };
