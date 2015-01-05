@@ -31,8 +31,7 @@ module.exports = function(grunt) {
         dest: 'tmp/<%= pkg.name %>.css'
       },
       scripts: {
-        src: ['src/scripts/core.js'
-        ],
+        src: ['src/scripts/core.js'],
         dest: 'tmp/<%= pkg.name %>.js'
       }
     },
@@ -100,16 +99,24 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      livereload: {
-        options: {
-          livereload: true
-        },
-        files: ['src/**/*.js', 'src/html/**/*.html', 'src/**/*.less'],
-        tasks: ['less:development', 'includes', 'jshint']
+      // livereload: {
+      //   options: {
+      //     livereload: true
+      //   },
+      //   files: ['src/**/*.js', 'src/html/**/*.html', 'src/**/*.less'],
+      //   tasks: ['less:development', 'includes', 'jshint']
+      // },
+      js: {
+        files: 'src/scripts/**/*.js',
+        tasks: 'jshint:src'
       },
-      browserSync: {
-        files: ['src/**/*.js', 'src/html/**/*.html', 'src/**/*.less'],
-        tasks: ['less:development', 'includes', 'jshint']
+      css: {
+        files: 'src/styles/**/*.less',
+        tasks: 'less:development'
+      },
+      html: {
+        files: 'src/html/**/*.html',
+        tasks: 'includes'
       }
     },
 
@@ -128,7 +135,7 @@ module.exports = function(grunt) {
     less: {
       development: {
         path: 'src/styles/',
-        compress: true,
+        compress: false,
         files: {
           'src/styles/style.css': 'src/styles/style.less'
         }
@@ -158,16 +165,17 @@ module.exports = function(grunt) {
     },
 
     browserSync: {
-      options: {
-        server: {
-          baseDir: 'src'
-        },
-        watchTask: true,
-        files: ['src/html/**/*.html', 'src/scripts/**/*.js', 'src/styles/*.css']
-      },
+
       dev: {
-        bsFiles: {
-          src: 'src/styles/*.css'
+        // bsFiles: {
+        //   src: 'src/styles/*.css'
+        // },
+        options: {
+          server: {
+            baseDir: 'src'
+          },
+          files: ['src/styles/*.css', 'src/scripts/**/*.js', 'src/*.html'],
+          watchTask: true
         }
       }
     }
@@ -178,7 +186,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-connect');
+  // grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-processhtml');
   grunt.loadNpmTasks('grunt-contrib-less');
@@ -190,8 +198,9 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('dev', ['connect', 'watch:livereload']);
-  grunt.registerTask('dev2', ['browserSync', 'watch:browserSync']);
 
-  grunt.registerTask('build', ['clean', 'less', 'concat', 'uglify', 'cssmin', 'imagemin', 'processhtml']);
+  grunt.registerTask('dev', ['connect', 'watch']);
+  grunt.registerTask('dev2', ['browserSync', 'watch']);
+
+  grunt.registerTask('build', ['clean', 'less', 'concat', 'uglify', 'cssmin', 'imagemin', 'includes', 'processhtml']);
 };
