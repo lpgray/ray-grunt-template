@@ -5,8 +5,8 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    banner: '// <%= pkg.title || pkg.name %> v<%= pkg.version %> \n' +
-      '// Copyright <%= pkg.author.name %> Build: <%= grunt.template.today("yyyy-mm-dd") %>\n',
+    banner: '/** <%= pkg.title || pkg.name %> v<%= pkg.version %> \n' +
+            ' * Copyright <%= pkg.author.name %> Build: <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>\n **/',
     timestamp: timestamp,
     cdn: '',
     dist: 'dist',
