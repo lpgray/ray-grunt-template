@@ -39,10 +39,8 @@ exports.template = function(grunt, init, done) {
   ], function(err, props) {
     props.devDependencies = {
       "grunt": "~0.4.2",
-      "grunt-browser-sync": "^1.5.3",
+      "grunt-browser-sync": "^2.0.0",
       "grunt-contrib-watch": "~0.5.3",
-      // "grunt-contrib-connect": "~0.6.0",
-      // "connect-livereload": "~0.3.2",
       "grunt-contrib-uglify": "~0.3.2",
       "grunt-contrib-cssmin": "~0.8.0",
       "grunt-contrib-jshint": "~0.8.0",
