@@ -8,7 +8,7 @@
 4. `git clone git@github.com:lpgray/ray-grunt-template.git`
 5. 使用 ray-grunt-template，运行 `grunt-init ~/ray-grunt-template`
 6. 安装依赖，运行 `npm install`
-7. 运行 `grunt dev2` enjoy it!
+7. 运行 `grunt dev` enjoy it!
 
 ## 特性
 
@@ -31,6 +31,3 @@
 
 ### Develop
 - 采用更强大的 [browser-sync](https://github.com/shakyShane/browser-sync) 工具，来实现多屏同步开发，CSS自动注入无需刷新就可以看到浏览器效果，而且还能多屏幕同步操作，运行 `grunt dev` 使用此开发模式。
-
-## 来信交流
-请邮件至 [px.zhangyang@gmail.com](mailto:px.zhangyang@gmail.com)
