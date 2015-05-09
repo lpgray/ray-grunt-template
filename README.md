@@ -1,6 +1,9 @@
 # ray-grunt-template
 一个基于 [gruntjs](http://gruntjs.org) 及其多个插件的Web前端开发项目初始化模板，切图好帮手。
 
+## Gulp Version
+这里有一个正在开发中的[gulp 版](https://github.com/lpgray/gulp-boilerplate)
+
 ## 使用步骤
 1. 安装 [nodejs](http://nodejs.org) 与 [gruntjs](http://gruntjs.com) 环境
 2. `npm install -g grunt-init` 安装 `grunt-init`
